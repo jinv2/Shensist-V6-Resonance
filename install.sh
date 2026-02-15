@@ -1,41 +1,21 @@
 #!/bin/bash
+echo "🧠 Shensist V6 Resonance - 正在初始化引擎..."
 
-# 🦞 LATT-Core V5 Final (神思) 一键部署脚本
+# 创建配置目录
+mkdir -p config
 
-echo "--------------------------------------------------"
-echo "🚀 开始部署 LATT-Core V5 Final..."
-echo "--------------------------------------------------"
-
-# 1. 检查 Python 环境
-if ! command -v python3 &> /dev/null; then
-    echo "❌ 错误: 未检测到 python3，请先安装。"
-    exit 1
-fi
-
-# 2. 安装必要依赖
-echo "📦 正在安装依赖库 (requests, psutil)..."
-pip3 install requests psutil --quiet
-
-# 3. 检查 Ollama
-if ! command -v ollama &> /dev/null; then
-    echo "🌐 正在安装 Ollama 引擎..."
-    curl -fsSL https://ollama.com/install.sh | sh
+# 检测核心文件是否存在
+if [ ! -f "config/model.gguf" ]; then
+    echo "📥 正在从云端调取逻辑核心 (2.0GB)..."
+    # 【请注意】我在这里放了一个占位符，请你把括号里的内容替换为你找到的那个真实 URL
+    # 示例: curl -L -o config/model.gguf https://huggingface.co/xxx/resolve/main/xxx.gguf
+    curl -L -o config/model.gguf "你刚才找到的那个网络下载链接"
 else
-    echo "✅ Ollama 已安装。"
+    echo "✅ 逻辑核心已就绪，跳过下载。"
 fi
 
-# 4. 创建必要目录
-mkdir -p tools config
+echo "📦 正在配置逻辑链路..."
+# 如果你有 requirements.txt，会执行安装
+[ -f "requirements.txt" ] && pip install -r requirements.txt
 
-# 5. 提示模型部署
-echo "--------------------------------------------------"
-echo "⚠️ 重要提示: "
-echo "由于 GitHub 文件限制，模型文件 config/model.gguf 未包含在内。"
-echo "请手动将您的 GGUF 模型放入 config/ 目录，或执行以下指令下载默认模型："
-echo "   ollama pull deepseek-v2:lite"
-echo "--------------------------------------------------"
-
-echo "✅ 部署完成！"
-echo "👉 启动方式："
-echo "   终端 A: ollama serve"
-echo "   终端 B: python3 gui_protocol.py"
+echo "✨ 神思 V6 部署完成！输入 python3 main.py 启动共振。"
